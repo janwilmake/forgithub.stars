@@ -1,0 +1,13 @@
+#:schema node_modules/wrangler/config-schema.json
+name = "janwilmake_uithub_stars"
+main = "main.ts"
+compatibility_date = "2025-01-01"
+
+routes = [
+  { pattern = "stars.uithub.com", custom_domain = true }
+]
+
+[[kv_namespaces]]
+binding = "GITHUB_STARS_CACHE"
+id = "797c84c684304eb5bce6c4c293078ca5"
+
