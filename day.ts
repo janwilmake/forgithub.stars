@@ -3,19 +3,11 @@ import { Env } from "./types.js";
 import { fetchEach } from "./fetchEach.js";
 
 interface HourlyData {
-  path: string;
-  totalWatches: number;
-  repositories: {
-    [key: string]: number;
-  };
+  [key: string]: number;
 }
 
 interface DailyData {
-  date: string;
-  totalWatches: number;
-  repositories: {
-    [key: string]: number;
-  };
+  [key: string]: number;
 }
 
 export default {
@@ -75,38 +67,27 @@ export default {
 
       console.log("DONE", hourlyData.length);
       // Aggregate the data
-      const aggregatedData: DailyData = {
-        date: dateParam,
-        totalWatches: 0,
-        repositories: {},
-      };
+      const aggregatedData: DailyData = {};
 
       for (const hourData of hourlyData) {
-        // Add to total watches
-        aggregatedData.totalWatches += hourData.totalWatches;
-
         // Combine repository data
         for (const [repo, count] of Object.entries(hourData.repositories)) {
-          aggregatedData.repositories[repo] =
-            (aggregatedData.repositories[repo] || 0) + count;
+          aggregatedData[repo] = (aggregatedData[repo] || 0) + count;
         }
       }
 
       // Create array of [key, value] pairs and sort once
-      const sortedEntries = Object.entries(aggregatedData.repositories).sort(
+      const sortedEntries = Object.entries(aggregatedData).sort(
         ([, a], [, b]) => b - a,
       );
 
       // Create object directly from sorted entries
-      aggregatedData.repositories = Object.fromEntries(sortedEntries);
+      const final = Object.fromEntries(sortedEntries);
 
       // Store in KV
-      await env.GITHUB_STARS_CACHE.put(
-        cacheKey,
-        JSON.stringify(aggregatedData),
-      );
+      await env.GITHUB_STARS_CACHE.put(cacheKey, JSON.stringify(final));
 
-      const entries = Object.entries(aggregatedData.repositories);
+      const entries = Object.entries(final);
 
       const limited =
         limit && !isNaN(Number(limit))
@@ -114,6 +95,7 @@ export default {
           : entries;
 
       const obj = Object.fromEntries(limited);
+
       return new Response(
         JSON.stringify({ ...aggregatedData, repositories: obj }, undefined, 2),
         {

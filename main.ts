@@ -17,6 +17,13 @@ export default {
       return month.fetch(request, env);
     }
 
+    if (path === "month") {
+      // last 30 days
+    }
+    if (path === "week") {
+      //last 7 days
+    }
+
     // The root should respond with the last 7*24 hours that are found.
     return new Response(
       "Please fetch YYYY-MM-DD-H, YYYY-MM-DD, or YYYY-W1-52",

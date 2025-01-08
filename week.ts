@@ -2,18 +2,13 @@ import { fetchEach } from "./fetchEach.js";
 import { Env } from "./types.js";
 
 interface HourlyData {
-  path: string;
-  totalWatches: number;
-  repositories: {
-    [key: string]: number;
-  };
+  [key: string]: number;
 }
 
 interface WeeklyData {
   weekNumber: string; // YYYY-WW format
   startDate: string; // YYYY-MM-DD
   endDate: string; // YYYY-MM-DD
-  totalWatches: number;
   repositories: {
     [key: string]: number;
   };
@@ -129,16 +124,12 @@ export default {
         weekNumber: weekParam,
         startDate,
         endDate,
-        totalWatches: 0,
         repositories: {},
       };
 
       for (const hourData of hourlyData) {
-        // Add to total watches
-        aggregatedData.totalWatches += hourData.totalWatches;
-
         // Combine repository data
-        for (const [repo, count] of Object.entries(hourData.repositories)) {
+        for (const [repo, count] of Object.entries(hourData)) {
           aggregatedData.repositories[repo] =
             (aggregatedData.repositories[repo] || 0) + count;
         }

@@ -2,19 +2,11 @@ import { fetchEach } from "./fetchEach.js";
 import { Env } from "./types.js";
 
 interface DailyData {
-  date: string;
-  totalWatches: number;
-  repositories: {
-    [key: string]: number;
-  };
+  [key: string]: number;
 }
 
 interface MonthlyData {
-  month: string;
-  totalWatches: number;
-  repositories: {
-    [key: string]: number;
-  };
+  [key: string]: number;
 }
 
 function getDaysInMonth(year: number, month: number): number {
@@ -86,50 +78,37 @@ export default {
       console.log("DONE", dailyData.length);
 
       // Aggregate the data
-      const aggregatedData: MonthlyData = {
-        month: monthParam,
-        totalWatches: 0,
-        repositories: {},
-      };
+      const aggregatedData: MonthlyData = {};
 
       for (const dayData of dailyData) {
-        // Add to total watches
-        aggregatedData.totalWatches += dayData.totalWatches;
-
         // Combine repository data
-        for (const [repo, count] of Object.entries(dayData.repositories)) {
-          aggregatedData.repositories[repo] =
-            (aggregatedData.repositories[repo] || 0) + (count as number);
+        for (const [repo, count] of Object.entries(dayData)) {
+          aggregatedData[repo] =
+            (aggregatedData[repo] || 0) + (count as number);
         }
       }
 
       // Create array of [key, value] pairs and sort by count
-      const sortedEntries = Object.entries(aggregatedData.repositories).sort(
+      const sortedEntries = Object.entries(aggregatedData).sort(
         ([, a], [, b]) => b - a,
       );
 
       // Create object from sorted entries
-      aggregatedData.repositories = Object.fromEntries(sortedEntries);
+      const final = Object.fromEntries(sortedEntries);
 
       // Store in KV
-      await env.GITHUB_STARS_CACHE.put(
-        cacheKey,
-        JSON.stringify(aggregatedData),
-      );
+      await env.GITHUB_STARS_CACHE.put(cacheKey, JSON.stringify(final));
 
-      const entries = Object.entries(aggregatedData.repositories);
+      const entries = Object.entries(aggregatedData);
       const limited =
         limit && !isNaN(Number(limit))
           ? entries.slice(0, Number(limit))
           : entries;
       const obj = Object.fromEntries(limited);
 
-      return new Response(
-        JSON.stringify({ ...aggregatedData, repositories: obj }, undefined, 2),
-        {
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      return new Response(JSON.stringify(obj, undefined, 2), {
+        headers: { "Content-Type": "application/json" },
+      });
     } catch (error: any) {
       console.error("Error processing request:", error);
       return new Response("Internal Server Error: " + error.message, {
