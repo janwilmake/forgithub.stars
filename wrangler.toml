@@ -3,6 +3,7 @@ name = "janwilmake_uithub_stars"
 main = "main.ts"
 compatibility_date = "2025-01-01"
 
+assets = { directory = "./public" }
 routes = [
   { pattern = "stars.uithub.com", custom_domain = true }
 ]

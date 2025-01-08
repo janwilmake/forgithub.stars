@@ -58,7 +58,7 @@ export default {
       const urls = Array.from({ length: daysInMonth }, (_, day) => {
         const dayStr = (day + 1).toString().padStart(2, "0");
         // 25k limit because that makes a total of 30 times 800kb = 24mb
-        return `https://eventstream.uithub.com/${yearStr}-${monthStr}-${dayStr}?limit=25000`;
+        return `https://stars.uithub.com/${yearStr}-${monthStr}-${dayStr}?limit=25000`;
       });
 
       console.log({ urls });

@@ -1,0 +1,258 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "GitHub Stars API",
+    "description": "API for retrieving GitHub repository star statistics aggregated by day, week, and month",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://stars.uithub.com",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/{date}": {
+      "get": {
+        "summary": "Get daily star statistics",
+        "description": "Retrieves star counts for repositories on a specific date",
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "description": "Date in YYYY-MM-DD format",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+              "example": "2024-01-08"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of repositories to return",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "repositories": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer",
+                        "description": "Number of stars for the repository"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid date format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid date format. Use YYYY-MM-DD"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}-{month}": {
+      "get": {
+        "summary": "Get monthly star statistics",
+        "description": "Retrieves aggregated star counts for repositories in a specific month",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Year (YYYY)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}$"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "description": "Month (MM)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of repositories to return",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer",
+                    "description": "Number of stars for the repository"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid month format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid month format. Use YYYY-MM"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/{year}-W{week}": {
+      "get": {
+        "summary": "Get weekly star statistics",
+        "description": "Retrieves aggregated star counts for repositories in a specific week",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "description": "Year (YYYY)",
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}$"
+            }
+          },
+          {
+            "name": "week",
+            "in": "path",
+            "required": true,
+            "description": "Week number (1-52)",
+            "schema": {
+              "type": "string",
+              "pattern": "^(0?[1-9]|[1-4][0-9]|5[0-2])$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "weekNumber": {
+                      "type": "string",
+                      "description": "Week number in YYYY-WW format"
+                    },
+                    "startDate": {
+                      "type": "string",
+                      "description": "Start date of the week (YYYY-MM-DD)"
+                    },
+                    "endDate": {
+                      "type": "string",
+                      "description": "End date of the week (YYYY-MM-DD)"
+                    },
+                    "repositories": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer",
+                        "description": "Number of stars for the repository"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid week format",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "example": "Invalid week format. Use YYYY-W1 to YYYY-W52"
+                }
+              }
+            }
+          },
+          "405": {
+            "description": "Method not allowed"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
