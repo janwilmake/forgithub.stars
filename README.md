@@ -21,3 +21,15 @@ Then you can also find another function called day.ts where you will find that i
 So now I have JSONs where it counts the amount of new stars for any given repo in a day and I would have all the new stars that were given on any given day. That's the day endpoint.
 
 There is one final endpoint called `week`. If you pass the year, 'w', and the week number, it will respond with all the hours that occurred in that week aggregated. It will do the same amount of fetches as the number of weeks requested. This response in the fetch from that each will be about 50 MB. So it's kind of borderline to do this because if that gets any bigger we could have a problem. But it's still possible it seems, so let's do it. If we run into trouble, we can change this logic to something else later. For now, I think it will work. If it's too large, let's do it using a binding to self, fetching 7x the day endpoint. it matters little, but effectively this will reduce the total size of responses a lot because of intermediate aggregation.
+
+## TODO: Top new stars of last 30 days
+
+✅ Created `uithub.gharchive` and `uithub.stars` to count new stars.
+
+Figure out why day, week, and month still don't work. fetchEach seems to be failing. day=24, week=7day, month=30days. should be possible with fetch each. prime usecase!
+
+Also add `/day` and `/week` and `/month` endpoints, and proxy these through `boncron` so they stay fresh properly. Apply `?limit=` param after result.
+
+Create OpenAPI
+
+Finish `uithub.stars` which serves just a public static JSON of TOP N repos.

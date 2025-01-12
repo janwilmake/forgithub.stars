@@ -33,14 +33,13 @@ export default {
       const cachedData = await env.GITHUB_STARS_CACHE.get(cacheKey);
       if (cachedData) {
         const parsed = JSON.parse(cachedData);
-        const entries = Object.entries(parsed.repositories);
+        const entries = Object.entries(parsed);
         const limited =
           limit && !isNaN(Number(limit))
             ? entries.slice(0, Number(limit))
             : entries;
         const obj = Object.fromEntries(limited);
-        parsed.repositories = obj;
-        return new Response(JSON.stringify(parsed, undefined, 2), {
+        return new Response(JSON.stringify(obj, undefined, 2), {
           headers: { "Content-Type": "application/json" },
         });
       }
@@ -71,7 +70,7 @@ export default {
 
       for (const hourData of hourlyData) {
         // Combine repository data
-        for (const [repo, count] of Object.entries(hourData.repositories)) {
+        for (const [repo, count] of Object.entries(hourData)) {
           aggregatedData[repo] = (aggregatedData[repo] || 0) + count;
         }
       }
