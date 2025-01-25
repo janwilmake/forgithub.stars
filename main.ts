@@ -1,12 +1,13 @@
-/** This is a doc comment above the imports. it is the first doc comment and it's in the outer loop */
+/** This is a doc comment above the imports. it is the first doc comment and it's in the outer loop
+ *
+ * It has multiple lines
+ */
 
 import { Env } from "./types.js";
 import day from "./day.js";
 import week from "./week.js";
 import month from "./month.js";
-/* This is a regular comment above the export default. it is the second doc comment and it's in the outer loop */
 
-//  this is a shalsh comment
 export default {
   fetch: (request: Request, env: Env) => {
     const path = new URL(request.url).pathname.slice(1);
