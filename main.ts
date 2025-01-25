@@ -1,7 +1,10 @@
+/** This is a doc comment above the imports. it is the first doc comment and it's in the outer loop */
+
 import { Env } from "./types.js";
 import day from "./day.js";
 import week from "./week.js";
 import month from "./month.js";
+/** This is a doc comment above the export default. it is the second doc comment and it's in the outer loop */
 
 export default {
   fetch: (request: Request, env: Env) => {
