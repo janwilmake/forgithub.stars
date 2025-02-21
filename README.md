@@ -1,6 +1,6 @@
 # Stars for GitHub
 
-Requirements: use the API at https://gharchive.uithub.com and create a cached API to retrieve new stars events, that has the following endpoints:
+Requirements: use the API at https://archive.forgithub.com and create a cached API to retrieve new stars events, that has the following endpoints:
 
 - `/{date}` - specific date
 - `/{year}-{month}` - specific month
