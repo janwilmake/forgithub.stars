@@ -20,3 +20,10 @@ Also add `/day` and `/week` and `/month` endpoints, use a cloudflare cronjob or 
 Apply `?limit=` param after result (limit to N results)
 
 Create OpenAPI
+
+# Useful resources
+
+- https://docs.uithub.com
+- https://developers.cloudflare.com/workers/
+- https://developers.cloudflare.com/queues/
+- https://developers.cloudflare.com/durable-objects/
