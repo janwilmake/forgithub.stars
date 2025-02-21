@@ -26,7 +26,7 @@ There is one final endpoint called `week`. If you pass the year, 'w', and the we
 
 ✅ Created `uithub.gharchive` and `uithub.stars` to count new stars.
 
-Figure out why day, week, and month still don't work. fetchEach seems to be failing. day=24, week=7day, month=30days. should be possible with fetch each. prime usecase!
+Figure out why day, week, and month still don't work. fetchEach seems to be failing. day=24, week=7day, month=30days. should be possible with fetch each. prime usecase! However, a queue is also possible.
 
 Also add `/day` and `/week` and `/month` endpoints, and proxy these through `boncron` so they stay fresh properly. Apply `?limit=` param after result.
 
