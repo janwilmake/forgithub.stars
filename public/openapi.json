@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://stars.uithub.com",
+      "url": "https://stars.forgithub.com",
       "description": "Production server"
     }
   ],

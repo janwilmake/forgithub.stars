@@ -60,7 +60,7 @@ function generateHourlyUrls(startDate: string, endDate: string): string[] {
     const dateStr = current.toISOString().split("T")[0];
     // Generate 24 URLs for each day
     for (let hour = 0; hour < 24; hour++) {
-      urls.push(`https://gharchive.uithub.com/api/${dateStr}-${hour}`);
+      urls.push(`https://archive.forgithub.com/api/${dateStr}-${hour}`);
     }
     current.setDate(current.getDate() + 1);
   }

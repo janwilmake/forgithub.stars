@@ -47,7 +47,7 @@ export default {
       // Create URLs for each hour (0-23)
       const urls = Array.from(
         { length: 24 },
-        (_, hour) => `https://gharchive.uithub.com/api/${dateParam}-${hour}`,
+        (_, hour) => `https://archive.forgithub.com/api/${dateParam}-${hour}`,
       );
 
       console.log({ urls });
